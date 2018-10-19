@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/rashedmyt/trtl-api-go)](https://goreportcard.com/report/github.com/rashedmyt/trtl-api-go)
+[![GoDoc](https://godoc.org/github.com/rashedmyt/trtl-api-go?status.svg)](https://godoc.org/github.com/rashedmyt/trtl-api-go)
+
 # TRTL Service Golang API Interface
 
 This wrapper allows you to easily interact with the [TRTL Services](https://trtl.services) API to quickly develop applications that interact with the [TurtleCoin](https://turtlecoin.lol) Network.
