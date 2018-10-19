@@ -21,7 +21,7 @@ type TRTLServices struct {
 
 func (service *TRTLServices) check() error {
 	if service.URL == "" {
-		service.URL = "api.trtl.services"
+		service.URL = "https://api.trtl.services"
 	}
 
 	if service.Token == "" {

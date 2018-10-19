@@ -16,7 +16,7 @@ This wrapper allows you to easily interact with the [TRTL Services](https://trtl
 # Installation
 
 ```bash
-go get github.com/trtl-services/trtl-api-go
+go get github.com/trtl-services/ts-api-go
 ```
 
 # Intialization
@@ -25,11 +25,11 @@ go get github.com/trtl-services/trtl-api-go
 import (
     "fmt"
 
-    "github.com/trtl-services/trtl-api-go"
+    "github.com/trtl-services/ts-api-go"
 )
 
 services := tsapi.TRTLServices{
-    URL: "api.trtl.services",
+    URL: "https://api.trtl.services",
     Token: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdCIsImFwcElkIjo0LCJ1c2VySWQiOjYsInBlcm1pc3Npb25zIjpbImFkZHJlc3M6bmV3Il0sImlhdCI6MTUzNjU4NTM2NywiZXhwIjoxNTM5MTc3MzY3LCJhdWQiOiJ0dXJ0bGV3YWxsZXQuaW8iLCJpc3MiOiJUUlRMIFNlcnZpY2VzIiwianRpIjoiMzMifQ.AEHXmvTo8RfNuZ15Y3IGPRhZPaJxFSmOZvVv2YGN9L4We7bXslIPxhMv_n_5cNW8sIgE2Fr-46OTb5H5AFgpjA",
 }
 ```
