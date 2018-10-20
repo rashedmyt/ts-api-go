@@ -165,7 +165,7 @@ func (service *TRTLServices) makeGetRequest(method string) *bytes.Buffer {
 		return nil
 	}
 
-	req.Header.Add("authorization", service.Token)
+	req.Header.Add("authorization", "Bearer "+service.Token)
 
 	return decodeResponse(req)
 }
@@ -192,7 +192,7 @@ func (service *TRTLServices) makePostRequest(method string, params map[string]in
 		return nil
 	}
 
-	req.Header.Add("authorization", service.Token)
+	req.Header.Add("authorization", "Bearer "+service.Token)
 
 	return decodeResponse(req)
 }
@@ -211,7 +211,7 @@ func (service *TRTLServices) makeDeleteRequest(method string) *bytes.Buffer {
 		return nil
 	}
 
-	req.Header.Add("authorization", service.Token)
+	req.Header.Add("authorization", "Bearer "+service.Token)
 
 	return decodeResponse(req)
 }
