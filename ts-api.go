@@ -2,12 +2,13 @@ package tsapi
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 )
 
 /*
@@ -38,7 +39,7 @@ func (service *TRTLServices) CreateAddress() (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	data := make(map[string]interface{})
+	data := url.Values{}
 
 	response := service.makePostRequest("address", data)
 
@@ -119,13 +120,13 @@ func (service *TRTLServices) CreateTransfer(
 		return nil, err
 	}
 
-	data := make(map[string]interface{})
-	data["from"] = fromAddress
-	data["to"] = toAddress
-	data["amount"] = amount
-	data["fee"] = fee
-	data["paymentId"] = paymentID
-	data["extra"] = extra
+	data := url.Values{}
+	data.Set("from", fromAddress)
+	data.Set("to", toAddress)
+	data.Set("amount", strconv.FormatFloat(amount, 'f', 2, 64))
+	data.Set("fee", strconv.FormatFloat(fee, 'f', 2, 64))
+	data.Set("paymentId", paymentID)
+	data.Set("extra", extra)
 
 	response := service.makePostRequest("transfer", data)
 
@@ -170,7 +171,7 @@ func (service *TRTLServices) makeGetRequest(method string) *bytes.Buffer {
 	return decodeResponse(req)
 }
 
-func (service *TRTLServices) makePostRequest(method string, params map[string]interface{}) *bytes.Buffer {
+func (service *TRTLServices) makePostRequest(method string, data url.Values) *bytes.Buffer {
 	if method == "" {
 		fmt.Println("No method supplied")
 		return nil
@@ -178,21 +179,14 @@ func (service *TRTLServices) makePostRequest(method string, params map[string]in
 
 	url := service.URL + "/" + method
 
-	jsonPayload, err := json.Marshal(params)
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
-
-	body := bytes.NewBuffer(jsonPayload)
-
-	req, err := http.NewRequest("POST", url, body)
+	req, err := http.NewRequest("POST", url, strings.NewReader(data.Encode()))
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
 	req.Header.Add("authorization", "Bearer "+service.Token)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	return decodeResponse(req)
 }
