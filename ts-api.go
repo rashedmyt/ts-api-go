@@ -157,7 +157,7 @@ func (service *TRTLServices) GetStatus() (*bytes.Buffer, error) {
 }
 
 func (service *TRTLServices) makeGetRequest(method string) *bytes.Buffer {
-	url := "https://" + service.URL + "/" + method
+	url := service.URL + "/" + method
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func (service *TRTLServices) makePostRequest(method string, params map[string]in
 		return nil
 	}
 
-	url := "https://" + service.URL + "/" + method
+	url := service.URL + "/" + method
 
 	jsonPayload, err := json.Marshal(params)
 	if err != nil {
@@ -203,7 +203,7 @@ func (service *TRTLServices) makeDeleteRequest(method string) *bytes.Buffer {
 		return nil
 	}
 
-	url := "https://" + service.URL + "/" + method
+	url := service.URL + "/" + method
 
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
