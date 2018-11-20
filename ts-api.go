@@ -2,12 +2,13 @@ package TRTLServices
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
+	"strings"
 )
 
 /*
@@ -158,13 +159,13 @@ func (service *TSwrapper) createTransfer(
 		return nil, err
 	}
 
-	data := make(map[string]interface{})
-	data["from"] = fromAddress
-	data["to"] = toAddress
-	data["amount"] = amount
-	data["fee"] = fee
-	data["paymentId"] = paymentID
-	data["extra"] = extra
+	data := url.Values{}
+	data.Set("from", fromAddress)
+	data.Set("to", toAddress)
+	data.Set("amount", strconv.FormatFloat(amount, 'f', 2, 64))
+	data.Set("fee", strconv.FormatFloat(fee, 'f', 2, 64))
+	data.Set("paymentId", paymentID)
+	data.Set("extra", extra)
 
 	response := service.makePostRequest("transfer", data)
 	return response, nil
@@ -231,7 +232,7 @@ func (service *TSwrapper) makePostRequest(method string, params map[string]inter
 
 	url := service.url + "/" + method
 
-	jsonPayload, err := json.Marshal(params)
+	req, err := http.NewRequest("POST", url, strings.NewReader(data.Encode()))
 	if err != nil {
 		fmt.Println(err)
 		return nil

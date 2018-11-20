@@ -1,9 +1,9 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/rashedmyt/trtl-api-go)](https://goreportcard.com/report/github.com/rashedmyt/trtl-api-go)
-[![GoDoc](https://godoc.org/github.com/rashedmyt/trtl-api-go?status.svg)](https://godoc.org/github.com/rashedmyt/trtl-api-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/trtl-services/ts-api-go)](https://goreportcard.com/report/github.com/rashedmyt/trtl-api-go)
+[![GoDoc](https://godoc.org/github.com/trtl-services/ts-api-go/?status.svg)](https://godoc.org/github.com/rashedmyt/trtl-api-go)
 
 # TRTL Service Golang API Interface
 
-This wrapper allows you to easily interact with the [TRTL TS](https://trtl.TS) API to quickly develop applications that interact with the [TurtleCoin](https://turtlecoin.lol) Network.
+This wrapper allows you to easily interact with the [TRTL Services](https://trtl.services) 0.9.0 API to quickly develop applications that interact with the [TurtleCoin](https://turtlecoin.lol) Network.
 
 
 # Table of Contents
@@ -13,11 +13,13 @@ This wrapper allows you to easily interact with the [TRTL TS](https://trtl.TS) A
 3. [Documentation](#documentation)
    1. [Methods](#methods)
 
+
 # Installation
 
 ```bash
 go get github.com/trtl-TS/ts-api-go
 ```
+
 
 # Intialization
 
@@ -33,6 +35,7 @@ TS := TRTLServices.TSwrapper {
     timeout: 2000
 }
 ```
+
 
 
 # Documentation
@@ -218,7 +221,7 @@ if err != nil {
 # License
 
 ```
-Copyright (C) 2018 Rashed Mohammed, The TurtleCoin Developers
+Copyright (C) 2018 Rashed Mohammed, Fexra, The TurtleCoin Developers
 
 Please see the included LICENSE file for more information.
 ```
