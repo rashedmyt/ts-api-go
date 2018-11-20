@@ -35,6 +35,7 @@ func (service *TSwrapper) check() error {
 	return nil
 }
 
+
 // Create Address
 func (service *TSwrapper) createADdress(address string) (*bytes.Buffer, error) {
 	err := service.check()
@@ -42,7 +43,8 @@ func (service *TSwrapper) createADdress(address string) (*bytes.Buffer, error) {
 		return nil, err
 	}
 
-	data := make(map[string]interface{})
+	data := url.Values{}
+
 	response := service.makePostRequest("address", data)
 	return response, nil
 }
@@ -115,9 +117,10 @@ func (service *TSwrapper) integrateAddress(address string) (*bytes.Buffer, error
 		return nil, err
 	}
 
-	data := make(map[string]interface{})
-	data["address"] = address
-	response := service.makePostRequest("address/integrate", data)
+	data := url.Values{}
+	data.Set("address", address)
+
+	response := service.makePostRequest("transfer", data)
 	return response, nil
 }
 
@@ -224,7 +227,7 @@ func (service *TSwrapper) makeGetRequest(method string) *bytes.Buffer {
 
 
 // Post Method
-func (service *TSwrapper) makePostRequest(method string, params map[string]interface{}) *bytes.Buffer {
+func (service *TSwrapper) makePostRequest(method string, data url.Values) *bytes.Buffer {
 	if method == "" {
 		fmt.Println("No method supplied.")
 		return nil
@@ -232,21 +235,16 @@ func (service *TSwrapper) makePostRequest(method string, params map[string]inter
 
 	url := service.url + "/" + method
 
-	req, err := http.NewRequest("POST", url, strings.NewReader(data.Encode()))
+	req, err := http.NewRequest("post", url, strings.NewReader(data.Encode()))
+
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
-	body := bytes.NewBuffer(jsonPayload)
+	req.Header.Add("Authorization", "Bearer " + service.token)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	req, err := http.NewRequest("post", url, body)
-	if err != nil {
-		fmt.Println(err)
-		return nil
-	}
-
-	req.Header.Add("authorization", service.token)
 	return decodeResponse(req)
 }
 
@@ -265,7 +263,7 @@ func (service *TSwrapper) makeDeleteRequest(method string) *bytes.Buffer {
 		return nil
 	}
 
-	req.Header.Add("authorization", service.token)
+	req.Header.Add("Authorization", service.token)
 	return decodeResponse(req)
 }
 
