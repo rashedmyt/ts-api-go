@@ -1,4 +1,4 @@
-package tsapi
+package TRTLServices
 
 import (
 	"bytes"
@@ -11,103 +11,142 @@ import (
 )
 
 /*
-TRTLServices structure contains the
-URL and Token info of the TRTL Services
+TSwrapper structure contains the
+url and Token info of the TRTL Services
 */
-type TRTLServices struct {
-	URL   string
-	Token string
+type TSwrapper struct {
+	url string
+	token string
+	timeout int
 }
 
-func (service *TRTLServices) check() error {
-	if service.URL == "" {
-		service.URL = "https://api.trtl.services"
+func (service *TSwrapper) check() error {
+	service.url = "https://api.trtl.services/v1"
+	
+	if service.token == "" {
+		return errors.New("All methods require an JWT access token. See https://trtl.services/docs")
 	}
 
-	if service.Token == "" {
-		return errors.New("All methods require an API key. See https://trtl.services/documentation")
+	if service.timeout == 0 {
+		service.timeout = 2000
 	}
 
 	return nil
 }
 
-// CreateAddress creates a new TRTL address
-func (service *TRTLServices) CreateAddress() (*bytes.Buffer, error) {
+// Create Address
+func (service *TSwrapper) createADdress(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
 	data := make(map[string]interface{})
-
 	response := service.makePostRequest("address", data)
-
 	return response, nil
 }
 
-// DeleteAddress deletes a selected TRTL address
-func (service *TRTLServices) DeleteAddress(address string) (*bytes.Buffer, error) {
+
+// Delete Address
+func (service *TSwrapper) deleteAddress(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
 	response := service.makeDeleteRequest("address/" + address)
-
 	return response, nil
 }
 
-// ViewAddress gets address details by address
-func (service *TRTLServices) ViewAddress(address string) (*bytes.Buffer, error) {
+
+// Get Adddress
+func (service *TSwrapper) getAddress(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
-	response := service.makeGetRequest("address/view/" + address)
+	response := service.makeGetRequest("address/" + address)
 
 	return response, nil
 }
 
-// ViewAddresses view all addresses belonging to the specified token
-func (service *TRTLServices) ViewAddresses() (*bytes.Buffer, error) {
+// Get Addresses
+func (service *TSwrapper) getAddresses() (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
-	response := service.makeGetRequest("address/view/all")
-
+	response := service.makeGetRequest("address/all")
 	return response, nil
 }
 
-// ScanAddress scan for transactions in the next 100
-// blocks specified by blockIndex and address
-func (service *TRTLServices) ScanAddress(address string, blockIndex int) (*bytes.Buffer, error) {
+
+// Scan Address
+func (service *TSwrapper) scanAddress(address string, blockIndex int) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
 	response := service.makeGetRequest("address/scan/" + address + "/" + strconv.Itoa(blockIndex))
-
 	return response, nil
 }
 
-// GetFee calculates the TRTL Services fee for a specified TRTL amount
-func (service *TRTLServices) GetFee(amount float64) (*bytes.Buffer, error) {
+
+// get Address Keys
+func (service *TSwrapper) getAddressKeys(address string) (*bytes.Buffer, error) {
+	err := service.check()
+	if err != nil {
+		return nil, err
+	}
+
+	response := service.makeGetRequest("address/keys/" + address)
+	return response, nil
+}
+
+
+// Integrate Address
+func (service *TSwrapper) integrateAddress(address string) (*bytes.Buffer, error) {
+	err := service.check()
+	if err != nil {
+		return nil, err
+	}
+
+	data := make(map[string]interface{})
+	data["address"] = address
+	response := service.makePostRequest("address/integrate", data)
+	return response, nil
+}
+
+
+// Get Integrated Addresses
+func (service *TSwrapper) getIntegratedAddresses(address string) (*bytes.Buffer, error) {
+	err := service.check()
+	if err != nil {
+		return nil, err
+	}
+
+	response := service.makeGetRequest("address/integrate/" + address)
+	return response, nil
+}
+
+
+// GetFee
+func (service *TSwrapper) getFee(amount float64) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
 	response := service.makeGetRequest("transfer/fee/" + strconv.FormatFloat(amount, 'f', 2, 64))
-
 	return response, nil
 }
 
-// CreateTransfer sends a TRTL transaction with a specified amount
-func (service *TRTLServices) CreateTransfer(
+
+// Create Transfer
+func (service *TSwrapper) createTransfer(
 	fromAddress string,
 	toAddress string,
 	amount float64,
@@ -128,55 +167,69 @@ func (service *TRTLServices) CreateTransfer(
 	data["extra"] = extra
 
 	response := service.makePostRequest("transfer", data)
-
 	return response, nil
 }
 
-// ViewTransfer lists transaction details with specified hash
-func (service *TRTLServices) ViewTransfer(transactionHash string) (*bytes.Buffer, error) {
+
+// Get Transfer
+func (service *TSwrapper) getTransfer(transactionHash string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
-	response := service.makeGetRequest("transfer/view/" + transactionHash)
-
+	response := service.makeGetRequest("transfer/" + transactionHash)
 	return response, nil
 }
 
-// GetStatus gets the current status of the TRTL Services infrastructure
-func (service *TRTLServices) GetStatus() (*bytes.Buffer, error) {
+
+// Get Wallet
+func (service *TSwrapper) getWallet() (*bytes.Buffer, error) {
+	err := service.check()
+	if err != nil {
+		return nil, err
+	}
+
+	response := service.makeGetRequest("wallet")
+	return response, nil
+}
+
+
+// Get Status
+func (service *TSwrapper) getStatus() (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
 	}
 
 	response := service.makeGetRequest("status")
-
 	return response, nil
 }
 
-func (service *TRTLServices) makeGetRequest(method string) *bytes.Buffer {
-	url := service.URL + "/" + method
 
-	req, err := http.NewRequest("GET", url, nil)
+// Get Method
+func (service *TSwrapper) makeGetRequest(method string) *bytes.Buffer {
+	url := service.url + "/" + method
+
+	req, err := http.NewRequest("get", url, nil)
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
-	req.Header.Add("authorization", service.Token)
-
+	req.Header.Add("Authorization", service.token)
 	return decodeResponse(req)
 }
 
-func (service *TRTLServices) makePostRequest(method string, params map[string]interface{}) *bytes.Buffer {
+
+// Post Method
+func (service *TSwrapper) makePostRequest(method string, params map[string]interface{}) *bytes.Buffer {
 	if method == "" {
-		fmt.Println("No method supplied")
+		fmt.Println("No method supplied.")
 		return nil
 	}
 
-	url := service.URL + "/" + method
+	url := service.url + "/" + method
 
 	jsonPayload, err := json.Marshal(params)
 	if err != nil {
@@ -186,36 +239,36 @@ func (service *TRTLServices) makePostRequest(method string, params map[string]in
 
 	body := bytes.NewBuffer(jsonPayload)
 
-	req, err := http.NewRequest("POST", url, body)
+	req, err := http.NewRequest("post", url, body)
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
-	req.Header.Add("authorization", service.Token)
-
+	req.Header.Add("authorization", service.token)
 	return decodeResponse(req)
 }
 
-func (service *TRTLServices) makeDeleteRequest(method string) *bytes.Buffer {
+// Delete Method
+func (service *TSwrapper) makeDeleteRequest(method string) *bytes.Buffer {
 	if method == "" {
-		fmt.Println("No method supplied")
+		fmt.Println("No method supplied.")
 		return nil
 	}
 
-	url := service.URL + "/" + method
+	url := service.url + "/" + method
 
-	req, err := http.NewRequest("DELETE", url, nil)
+	req, err := http.NewRequest("delete", url, nil)
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
 
-	req.Header.Add("authorization", service.Token)
-
+	req.Header.Add("authorization", service.token)
 	return decodeResponse(req)
 }
 
+// Decode Res 
 func decodeResponse(req *http.Request) *bytes.Buffer {
 	client := &http.Client{}
 

@@ -3,7 +3,7 @@
 
 # TRTL Service Golang API Interface
 
-This wrapper allows you to easily interact with the [TRTL Services](https://trtl.services) API to quickly develop applications that interact with the [TurtleCoin](https://turtlecoin.lol) Network.
+This wrapper allows you to easily interact with the [TRTL TS](https://trtl.TS) API to quickly develop applications that interact with the [TurtleCoin](https://turtlecoin.lol) Network.
 
 
 # Table of Contents
@@ -16,7 +16,7 @@ This wrapper allows you to easily interact with the [TRTL Services](https://trtl
 # Installation
 
 ```bash
-go get github.com/trtl-services/ts-api-go
+go get github.com/trtl-TS/ts-api-go
 ```
 
 # Intialization
@@ -25,18 +25,19 @@ go get github.com/trtl-services/ts-api-go
 import (
     "fmt"
 
-    "github.com/trtl-services/ts-api-go"
+    "github.com/trtl-TS/ts-api-go"
 )
 
-services := tsapi.TRTLServices{
-    URL: "https://api.trtl.services",
-    Token: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdCIsImFwcElkIjo0LCJ1c2VySWQiOjYsInBlcm1pc3Npb25zIjpbImFkZHJlc3M6bmV3Il0sImlhdCI6MTUzNjU4NTM2NywiZXhwIjoxNTM5MTc3MzY3LCJhdWQiOiJ0dXJ0bGV3YWxsZXQuaW8iLCJpc3MiOiJUUlRMIFNlcnZpY2VzIiwianRpIjoiMzMifQ.AEHXmvTo8RfNuZ15Y3IGPRhZPaJxFSmOZvVv2YGN9L4We7bXslIPxhMv_n_5cNW8sIgE2Fr-46OTb5H5AFgpjA",
+TS := TRTLServices.TSwrapper {
+    token: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdCIsImFwcElkIjo0LCJ1c2VySWQiOjYsInBlcm1pc3Npb25zIjpbImFkZHJlc3M6bmV3Il0sImlhdCI6MTUzNjU4NTM2NywiZXhwIjoxNTM5MTc3MzY3LCJhdWQiOiJ0dXJ0bGV3YWxsZXQuaW8iLCJpc3MiOiJUUlRMIFNlcnZpY2VzIiwianRpIjoiMzMifQ.AEHXmvTo8RfNuZ15Y3IGPRhZPaJxFSmOZvVv2YGN9L4We7bXslIPxhMv_n_5cNW8sIgE2Fr-46OTb5H5AFgpjA",
+    timeout: 2000
 }
 ```
 
+
 # Documentation
 
-API documentation is available at https://trtl.services/documentation
+API documentation is available at https://trtl.services/docs
 
 
 ## Methods
@@ -45,7 +46,7 @@ API documentation is available at https://trtl.services/documentation
 Create a new TRTL addresses
 
 ```go
-response, err := services.CreateAddress()
+response, err := TS.createAddress()
 if err != nil {
     fmt.Println(err)
 } else {
@@ -53,24 +54,22 @@ if err != nil {
 }
 ```
 
-
-### deleteAddress(address)
-Delete a selected TRTL addresses
-
-```go
-response, err := services.DeleteAdddress("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A")
-if err != nil {
-    fmt.Println(err)
-} else {
-    fmt.Println(response)
-}
-```
-
-
-### ViewAddress()
+### getAddress(address)
 Get address details by address
 ```go
-response, err := services.ViewAddress("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A")
+response, err := TS.getAddress("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A")
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(response)
+}
+```
+
+### deleteAddress(address)
+Delete a selected TRTL address
+
+```go
+response, err := TS.deleteAddress("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A")
 if err != nil {
     fmt.Println(err)
 } else {
@@ -79,11 +78,11 @@ if err != nil {
 ```
 
 
-### viewAddresses()
-View all addresses belonging to the specified token.
+### getAddresses()
+View all addresses.
 
 ```go
-response, err := services.ViewAddresses()
+response, err := TS.getAddresses()
 if err != nil {
     fmt.Println(err)
 } else {
@@ -92,11 +91,11 @@ if err != nil {
 ```
 
 
-### scanAddress()
-Scan for transactions in the next 100 blocks specified by blockIndex and address.
+### scanAddress(address, blockIndex)
+Scan an address for transactions between a 100 block range starting from the specified blockIndex.
 
 ```go
-response, err := services.ScanAddress("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A", 899093)
+response, err := TS.scanAddress("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A", 899093)
 if err != nil {
     fmt.Println(err)
 } else {
@@ -105,11 +104,51 @@ if err != nil {
 ```
 
 
-### getFee()
-Calculate the TRTL Services fee for a specified TRTL amount.
+### getAddressKeys(address)
+Get the public and secret spend key of an address.
+
 
 ```go
-response, err := services.GetFee(1092.19)
+response, err := TS.getAddressKeys("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A")
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(response)
+}
+```
+
+
+### integrateAddress(address, paymentId)
+Create an integrated address with an address and payment ID.
+
+```go
+response, err := TS.getAddressKeys("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A", "7d89a2d16365a1198c46db5bbe1af03d2b503a06404f39496d1d94a0a46f8804")
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(response)
+}
+```
+
+
+### getIntegratedAddresses(address)
+Get all integrated addresses by address.
+
+```go
+response, err := TS.getIntegratedAddresses("TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A", "7d89a2d16365a1198c46db5bbe1af03d2b503a06404f39496d1d94a0a46f8804")
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(response)
+}
+```
+
+
+### getFee(amount)
+Calculate the TRTL Services fee for an amount specified in TRTL with two decimal points.
+
+```go
+response, err := TS.getFee(1092.19)
 if err != nil {
     fmt.Println(err)
 } else {
@@ -119,10 +158,10 @@ if err != nil {
 
 
 ### createTransfer()
-Send a TRTL transaction with a specified account.
+Send a TRTL transaction with an address with the amount specified two decimal points.
 
 ```go
-response, err := services.CreateTransfer(
+response, err := TS.createTransfer(
     "TRTLuxH78akDMCsXycnU5HjJE6zPCgM4KRNNQSboqh1yiTnvxuhNVUL9tK92j9kurSKdXVHFmjSRkaNBxM6Nb3G8eQGL7aj113A", "TRTLuzAzNs1E1RBFhteX56A5353vyHuSJ5AYYQfoN97PNbcMDvwQo4pUWHs7SYpuD9ThvA7AD3r742kwTmWh5o9WFaB9JXH8evP",
     1000.00,
     1.00,
@@ -136,11 +175,25 @@ if err != nil {
 }
 ```
 
-### viewTransfer()
-Lists transaction details with specified hash.
+
+### getTransfer()
+Get a transaction details specified by transaction hash.
 
 ```go
-response, err := services.ViewTransfer("EohMUzR1DELyeQM9RVVwpmn5Y1DP0lh1b1ZpLQrfXQsgtvGHnDdJSG31nX2yESYZ")
+response, err := TS.getTransfer("EohMUzR1DELyeQM9RVVwpmn5Y1DP0lh1b1ZpLQrfXQsgtvGHnDdJSG31nX2yESYZ")
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(response)
+}
+```
+
+
+### getWallet()
+Get wallet container info and health check.
+
+```go
+response, err := TS.getWallet()
 if err != nil {
     fmt.Println(err)
 } else {
@@ -153,7 +206,7 @@ if err != nil {
 Get the current status of the TRTL Services infrastructure.
 
 ```go
-response, err := services.GetStatus()
+response, err := TS.getStatus()
 if err != nil {
     fmt.Println(err)
 } else {
