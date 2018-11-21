@@ -40,7 +40,7 @@ TS := TRTLServices.TSwrapper {
 
 # Documentation
 
-API documentation is available at https://trtl.services/docs
+API documentation is available at https://trtl.services/documentation
 
 
 ## Methods
