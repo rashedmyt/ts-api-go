@@ -1,5 +1,5 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/trtl-services/ts-api-go)](https://goreportcard.com/report/github.com/trtl-services/trtl-api-go)
-[![GoDoc](https://godoc.org/github.com/trtl-services/ts-api-go/?status.svg)](https://godoc.org/github.com/trtl-services/trtl-api-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/trtl-services/ts-api-go)](https://goreportcard.com/report/github.com/trtl-services/ts-api-go)
+[![GoDoc](https://godoc.org/github.com/trtl-services/ts-api-go/?status.svg)](https://godoc.org/github.com/trtl-services/ts-api-go)
 
 # TRTL Service Golang API Interface
 
