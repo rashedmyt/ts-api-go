@@ -1,5 +1,5 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/trtl-services/ts-api-go)](https://goreportcard.com/report/github.com/rashedmyt/trtl-api-go)
-[![GoDoc](https://godoc.org/github.com/trtl-services/ts-api-go/?status.svg)](https://godoc.org/github.com/rashedmyt/trtl-api-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/trtl-services/ts-api-go)](https://goreportcard.com/report/github.com/trtl-services/trtl-api-go)
+[![GoDoc](https://godoc.org/github.com/trtl-services/ts-api-go/?status.svg)](https://godoc.org/github.com/trtl-services/trtl-api-go)
 
 # TRTL Service Golang API Interface
 
@@ -17,7 +17,7 @@ This wrapper allows you to easily interact with the [TRTL Services](https://trtl
 # Installation
 
 ```bash
-go get github.com/trtl-TS/ts-api-go
+go get github.com/trtl-services/ts-api-go
 ```
 
 
@@ -27,7 +27,7 @@ go get github.com/trtl-TS/ts-api-go
 import (
     "fmt"
 
-    "github.com/trtl-TS/ts-api-go"
+    "github.com/trtl-services/ts-api-go"
 )
 
 TS := TRTLServices.TSwrapper {
