@@ -36,8 +36,8 @@ func (service *TSwrapper) check() error {
 	return nil
 }
 
-// Create Address
-func (service *TSwrapper) createAddress(address string) (*bytes.Buffer, error) {
+// CreateAddress method creates a new TRTL address
+func (service *TSwrapper) CreateAddress() (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -49,8 +49,8 @@ func (service *TSwrapper) createAddress(address string) (*bytes.Buffer, error) {
 	return response, nil
 }
 
-// Delete Address
-func (service *TSwrapper) deleteAddress(address string) (*bytes.Buffer, error) {
+// DeleteAddress method deletes the specified address
+func (service *TSwrapper) DeleteAddress(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func (service *TSwrapper) deleteAddress(address string) (*bytes.Buffer, error) {
 	return response, nil
 }
 
-// Get Adddress
-func (service *TSwrapper) getAddress(address string) (*bytes.Buffer, error) {
+// GetAddress method gets the address details of the specified address
+func (service *TSwrapper) GetAddress(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -72,8 +72,9 @@ func (service *TSwrapper) getAddress(address string) (*bytes.Buffer, error) {
 	return response, nil
 }
 
-// Get Addresses
-func (service *TSwrapper) getAddresses() (*bytes.Buffer, error) {
+// GetAddresses method views all addresses
+// associated with the API token
+func (service *TSwrapper) GetAddresses() (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -83,8 +84,9 @@ func (service *TSwrapper) getAddresses() (*bytes.Buffer, error) {
 	return response, nil
 }
 
-// Scan Address
-func (service *TSwrapper) scanAddress(address string, blockIndex int) (*bytes.Buffer, error) {
+// ScanAddress method scans an address for transactions between
+// a 100 block range starting from the specified blockIndex.
+func (service *TSwrapper) ScanAddress(address string, blockIndex int) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -94,8 +96,9 @@ func (service *TSwrapper) scanAddress(address string, blockIndex int) (*bytes.Bu
 	return response, nil
 }
 
-// get Address Keys
-func (service *TSwrapper) getAddressKeys(address string) (*bytes.Buffer, error) {
+// GetAddressKeys method gets the public and
+// secret spend keys of the specified address
+func (service *TSwrapper) GetAddressKeys(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -105,8 +108,9 @@ func (service *TSwrapper) getAddressKeys(address string) (*bytes.Buffer, error) 
 	return response, nil
 }
 
-// Integrate Address
-func (service *TSwrapper) integrateAddress(address string) (*bytes.Buffer, error) {
+// IntegrateAddress method creates an integrated
+// address with specified paymentID
+func (service *TSwrapper) IntegrateAddress(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -119,8 +123,9 @@ func (service *TSwrapper) integrateAddress(address string) (*bytes.Buffer, error
 	return response, nil
 }
 
-// Get Integrated Addresses
-func (service *TSwrapper) getIntegratedAddresses(address string) (*bytes.Buffer, error) {
+// GetIntegratedAddresses mthod returns all integrated
+// address associated with the given normal address
+func (service *TSwrapper) GetIntegratedAddresses(address string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -130,8 +135,9 @@ func (service *TSwrapper) getIntegratedAddresses(address string) (*bytes.Buffer,
 	return response, nil
 }
 
-// GetFee
-func (service *TSwrapper) getFee(amount float64) (*bytes.Buffer, error) {
+// GetFee method calculates the TRTL Services fee for
+// an amount specified in TRTL with two decimal points.
+func (service *TSwrapper) GetFee(amount float64) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -141,8 +147,9 @@ func (service *TSwrapper) getFee(amount float64) (*bytes.Buffer, error) {
 	return response, nil
 }
 
-// Create Transfer
-func (service *TSwrapper) createTransfer(
+// CreateTransfer method sends a TRTL transaction with an
+// address with the amount specified two decimal points.
+func (service *TSwrapper) CreateTransfer(
 	fromAddress string,
 	toAddress string,
 	amount float64,
@@ -166,8 +173,9 @@ func (service *TSwrapper) createTransfer(
 	return response, nil
 }
 
-// Get Transfer
-func (service *TSwrapper) getTransfer(transactionHash string) (*bytes.Buffer, error) {
+// GetTransfer method gets transaction details
+// specified by transaction hash.
+func (service *TSwrapper) GetTransfer(transactionHash string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -177,8 +185,8 @@ func (service *TSwrapper) getTransfer(transactionHash string) (*bytes.Buffer, er
 	return response, nil
 }
 
-// Get Wallet
-func (service *TSwrapper) getWallet() (*bytes.Buffer, error) {
+// GetWallet method gets wallet container info and health check
+func (service *TSwrapper) GetWallet() (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -188,8 +196,8 @@ func (service *TSwrapper) getWallet() (*bytes.Buffer, error) {
 	return response, nil
 }
 
-// Get Status
-func (service *TSwrapper) getStatus() (*bytes.Buffer, error) {
+// GetStatus method gets the current status of the TRTL Services infrastructure
+func (service *TSwrapper) GetStatus() (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -254,7 +262,7 @@ func (service *TSwrapper) makeDeleteRequest(method string) *bytes.Buffer {
 	return decodeResponse(req)
 }
 
-// Decode Res
+// Decode Response
 func decodeResponse(req *http.Request) *bytes.Buffer {
 	client := &http.Client{}
 
