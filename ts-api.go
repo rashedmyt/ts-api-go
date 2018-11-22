@@ -3,12 +3,12 @@ package TRTLServices
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 /*
@@ -18,19 +18,19 @@ the TRTL Services
 */
 type TSwrapper struct {
 	url     string
-	token   string
-	timeout int
+	Token   string
+	Timeout int
 }
 
 func (service *TSwrapper) check() error {
 	service.url = "https://api.trtl.services/v1"
 
-	if service.token == "" {
+	if service.Token == "" {
 		return errors.New("All methods require an JWT access token. See https://trtl.services/docs")
 	}
 
-	if service.timeout == 0 {
-		service.timeout = 2000
+	if service.Timeout == 0 {
+		service.Timeout = 2000
 	}
 
 	return nil
@@ -110,7 +110,7 @@ func (service *TSwrapper) GetAddressKeys(address string) (*bytes.Buffer, error) 
 
 // IntegrateAddress method creates an integrated
 // address with specified paymentID
-func (service *TSwrapper) IntegrateAddress(address string) (*bytes.Buffer, error) {
+func (service *TSwrapper) IntegrateAddress(address string, paymentID string) (*bytes.Buffer, error) {
 	err := service.check()
 	if err != nil {
 		return nil, err
@@ -118,8 +118,9 @@ func (service *TSwrapper) IntegrateAddress(address string) (*bytes.Buffer, error
 
 	data := url.Values{}
 	data.Set("address", address)
+	data.Set("paymentId", paymentID)
 
-	response := service.makePostRequest("transfer", data)
+	response := service.makePostRequest("address/integrate", data)
 	return response, nil
 }
 
@@ -166,8 +167,12 @@ func (service *TSwrapper) CreateTransfer(
 	data.Set("to", toAddress)
 	data.Set("amount", strconv.FormatFloat(amount, 'f', 2, 64))
 	data.Set("fee", strconv.FormatFloat(fee, 'f', 2, 64))
-	data.Set("paymentId", paymentID)
-	data.Set("extra", extra)
+	if paymentID != "" {
+		data.Set("paymentId", paymentID)
+	}
+	if extra != "" {
+		data.Set("extra", extra)
+	}
 
 	response := service.makePostRequest("transfer", data)
 	return response, nil
@@ -213,18 +218,18 @@ func (service *TSwrapper) makeGetRequest(method string) *bytes.Buffer {
 
 	req, err := http.NewRequest("get", url, nil)
 	if err != nil {
-		fmt.Println(err)
+		println(err)
 		return nil
 	}
 
-	req.Header.Add("Authorization", service.token)
-	return decodeResponse(req)
+	req.Header.Add("Authorization", service.Token)
+	return service.decodeResponse(req)
 }
 
 // Post Method
 func (service *TSwrapper) makePostRequest(method string, data url.Values) *bytes.Buffer {
 	if method == "" {
-		fmt.Println("No method supplied.")
+		println("No method supplied.")
 		return nil
 	}
 
@@ -233,20 +238,20 @@ func (service *TSwrapper) makePostRequest(method string, data url.Values) *bytes
 	req, err := http.NewRequest("post", url, strings.NewReader(data.Encode()))
 
 	if err != nil {
-		fmt.Println(err)
+		println(err)
 		return nil
 	}
 
-	req.Header.Add("Authorization", "Bearer "+service.token)
+	req.Header.Add("Authorization", "Bearer "+service.Token)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
-	return decodeResponse(req)
+	return service.decodeResponse(req)
 }
 
 // Delete Method
 func (service *TSwrapper) makeDeleteRequest(method string) *bytes.Buffer {
 	if method == "" {
-		fmt.Println("No method supplied.")
+		println("No method supplied.")
 		return nil
 	}
 
@@ -254,28 +259,29 @@ func (service *TSwrapper) makeDeleteRequest(method string) *bytes.Buffer {
 
 	req, err := http.NewRequest("delete", url, nil)
 	if err != nil {
-		fmt.Println(err)
+		println(err)
 		return nil
 	}
 
-	req.Header.Add("Authorization", service.token)
-	return decodeResponse(req)
+	req.Header.Add("Authorization", service.Token)
+	return service.decodeResponse(req)
 }
 
 // Decode Response
-func decodeResponse(req *http.Request) *bytes.Buffer {
+func (service *TSwrapper) decodeResponse(req *http.Request) *bytes.Buffer {
 	client := &http.Client{}
 
+	client.Timeout = time.Duration(service.Timeout) * time.Millisecond
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		println(err)
 		return nil
 	}
 	defer resp.Body.Close()
 
 	responseBody, err1 := ioutil.ReadAll(resp.Body)
 	if err1 != nil {
-		fmt.Println(err1)
+		println(err1)
 		return nil
 	}
 
